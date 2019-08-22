@@ -67,8 +67,12 @@ void PlayerMove()
 		PlayerX++;
 	}
 
-	if (map[PlayerY][PlayerX] == 0)
+	if (map[PlayerY][PlayerX] == 0 || map[PlayerY][PlayerX] == 4)
 	{
+		if (map[PlayerY][PlayerX] == 4)
+		{
+			bIsRunning = false;
+		}
 		//이동
 		map[OldPlayerY][OldPlayerX] = 0;
 		map[PlayerY][PlayerX] = 3;
