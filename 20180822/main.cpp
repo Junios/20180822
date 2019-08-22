@@ -12,18 +12,18 @@
 
 int map[10][10] = {
 	{1,1,1,1,1,1,1,1,1,1},
-	{2,0,0,0,0,0,0,0,0,2},
-	{2,0,0,0,0,0,0,0,0,2},
-	{2,0,0,0,0,0,0,0,0,2},
-	{2,0,0,0,0,0,0,0,0,2},
-	{2,0,0,0,0,0,0,0,0,2},
-	{2,0,0,0,0,0,0,0,0,2},
-	{2,0,0,0,0,0,0,0,0,2},
-	{2,0,0,0,0,0,0,0,0,2},
+	{2,0,0,1,0,0,0,0,0,2},
+	{2,1,0,0,0,0,1,0,0,2},
+	{2,2,0,0,0,0,0,0,0,2},
+	{2,2,0,0,1,0,2,2,0,2},
+	{2,0,0,0,1,0,2,0,0,2},
+	{2,0,0,0,1,0,0,0,0,2},
+	{2,0,0,0,1,0,1,0,0,2},
+	{2,0,0,0,1,0,0,0,4,2},
 	{1,1,1,1,1,1,1,1,1,1},
 };
 
-char MapTile[10] = { ' ', '-', '|', 'P' };
+char MapTile[10] = { ' ', '-', '|', 'P', 'G' };
 
 
 bool bIsRunning = true;
@@ -32,17 +32,24 @@ int PlayerX = 0;
 int PlayerY = 0;
 int KeyCode = 0;
 
+int OldPlayerX = 0;
+int OldPlayerY = 0;
+
+void MapInit()
+{
+	map[PlayerY][PlayerX] = 3;
+}
+
 void PlayerInit()
 {
 	PlayerX = 1;
 	PlayerY = 1;
+	OldPlayerX = 1;
+	OldPlayerY = 1;
 }
 
 void PlayerMove()
 {
-	int OldPlayerX = PlayerX;
-	int OldPlayerY = PlayerY;
-
 	if (KeyCode == UP)
 	{
 		PlayerY--;
@@ -60,8 +67,25 @@ void PlayerMove()
 		PlayerX++;
 	}
 
-	map[OldPlayerY][OldPlayerX] = 0;
-	map[PlayerY][PlayerX] = 3;
+	if (map[PlayerY][PlayerX] == 0)
+	{
+		//이동
+		map[OldPlayerY][OldPlayerX] = 0;
+		map[PlayerY][PlayerX] = 3;
+		OldPlayerX = PlayerX;
+		OldPlayerY = PlayerY;
+	}
+	else
+	{
+		PlayerX = OldPlayerX;
+		PlayerY = OldPlayerY;
+	}
+
+	//and &&
+	//or ||
+
+
+
 
 }
 
@@ -76,10 +100,10 @@ void Process()
 	{
 		bIsRunning = false;
 	}
-	//else if (KeyCode == 224)
-	//{
-	//	return;
-	//}
+	else if (KeyCode == 224)
+	{
+		return;
+	}
 
 	PlayerMove();
 }
@@ -106,12 +130,13 @@ void Terminate()
 int main()
 {
 	PlayerInit();
+	MapInit();
 
 	while (bIsRunning)
 	{
 		Input();
-		Render();
 		Process();
+		Render();
 	}
 
 	Terminate();
