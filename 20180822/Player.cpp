@@ -9,12 +9,12 @@ void InitPlayer()
 {
 	PlayerX = 1;
 	PlayerY = 1;
+	OldPlayerX = 1;
 	OldPlayerY = 1;
 }
 
 void MovePlayer()
 {
-	OldPlayerX = 1;
 	if (KeyCode == UP)
 	{
 		PlayerY--;
